@@ -17,7 +17,7 @@ class UserBehavior(TaskSet):
 
     @task(4)
     def posts(self):
-        self.client.head("/")
+        self.client.head("/delivery")
 
 class WebsiteUser(HttpLocust):
     task_set = UserBehavior

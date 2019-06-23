@@ -12,22 +12,28 @@ class The_first_page_test(unittest.TestCase):
         self.driver = webdriver.Chrome(executable_path=ChromeDriverManager().install())
         self.driver.implicitly_wait(10)
 
-    def test_first(self):
+    def test_first(self, quantity = 4):
         wdriver = self.driver
         parser = configparser.ConfigParser()
         parser.read('simple_config.ini')
         url = parser.get('data', 'url')
 
-        # Login to mailbox form
+        # Cart filling
         wdriver.get(url)
+        prise = wdriver.find_element_by_xpath(Default_page.prise_field)
         quantity_field = wdriver.find_element_by_xpath(Default_page.quantity_field)
-        quantity_field.send_keys(4)
-        button_аdd = wdriver.find_element_by_xpath(Default_page.button_аdd)
-        button_аdd.click()
-        #wdriver.implicitly_wait(10)
-        quantity_exeption = wdriver.find_element_by_xpath(Default_page.quantity_exeption)
-        #print(quantity_exeption.text)
-        assert quantity_exeption.text == quantity_exeption.expected_name
+        quantity_field.send_keys(quantity)
+        button_add = wdriver.find_element_by_xpath(Default_page.button_add)
+        button_add.click()
+        wdriver.implicitly_wait(10)
+        calculated_full_prise = prise*quantity
+        full_prise_elem = wdriver.find_element_by_xpath(Default_page.quantity_elem)
+        assert full_prise_elem.text == calculated_full_prise
+
+        # Remove from cart
+        button_delite = wdriver.find_element_by_xpath(Default_page.button_delite)
+        button_delite.click()
+        assert len(wdriver.find_elements_by_xpath(Default_page.quantity_elem)) == 0
 
         def tear_down(self):
             self.driver.quit()
@@ -55,45 +61,4 @@ class The_first_page_test(unittest.TestCase):
 
 
 
-
-
-
-        # Create e-mail
-        wdriver.find_element_by_xpath(Create_mail.create_button).click()
-        wdriver.find_element_by_xpath(Create_mail.fild_input).send_keys(Create_mail.expected_name)
-        wdriver.find_element_by_xpath(Create_mail.fild_subject).send_keys(id)
-        wdriver.find_element_by_xpath(Create_mail.submit_button).click()
-        wdriver.find_element_by_xpath("//a[@id='0']/span[4]").click()
-        wdriver.implicitly_wait(10)
-
-        # Find e-mail
-        elem = wdriver.find_elements_by_xpath("//*[text()='ID_109']")[0]
-        print(elem.text)
-        assert elem.text == id
-
-        # Login to mailbox form
-        wdriver.get(url)
-        login_field = wdriver.find_element_by_xpath(Login_page.login_field)
-        login_field.send_keys(user_name)
-        password_field = wdriver.find_element_by_xpath(Login_page.password_field)
-        password_field.send_keys(password)
-        button_login = wdriver.find_element_by_xpath(Login_page.button_login)
-        button_login.click()
-        wdriver.implicitly_wait(10)
-        user_mail = wdriver.find_element_by_xpath(Login_page.user_mail)
-        print(user_mail.text)
-        assert user_mail.text == Create_mail.expected_name
-
-        # Create e-mail
-        wdriver.find_element_by_xpath(Create_mail.create_button).click()
-        wdriver.find_element_by_xpath(Create_mail.fild_input).send_keys(Create_mail.expected_name)
-        wdriver.find_element_by_xpath(Create_mail.fild_subject).send_keys(id)
-        wdriver.find_element_by_xpath(Create_mail.submit_button).click()
-        wdriver.find_element_by_xpath("//a[@id='0']/span[4]").click()
-        wdriver.implicitly_wait(10)
-
-        # Find e-mail
-        elem = wdriver.find_elements_by_xpath("//*[text()='ID_109']")[0]
-        print(elem.text)
-        assert elem.text == id
 
