@@ -20,15 +20,22 @@ class The_first_page_test(unittest.TestCase):
 
         # Cart filling
         wdriver.get(url)
-        prise = wdriver.find_element_by_xpath(Default_page.prise_field)
+        product_name_field = wdriver.find_element_by_xpath(Default_page.product_name_field)
+        product_name = product_name_field.text
+        prise_elem = wdriver.find_element_by_xpath(Default_page.prise_field)
+        prise = prise_elem.text
         quantity_field = wdriver.find_element_by_xpath(Default_page.quantity_field)
         quantity_field.send_keys(quantity)
         button_add = wdriver.find_element_by_xpath(Default_page.button_add)
         button_add.click()
         wdriver.implicitly_wait(10)
+
+        purchased_goods_field = wdriver.find_element_by_xpath(Default_page.purchased_goods_field)
+        assert product_name == purchased_goods_field.text
         calculated_full_prise = prise*quantity
         full_prise_elem = wdriver.find_element_by_xpath(Default_page.quantity_elem)
         assert full_prise_elem.text == calculated_full_prise
+
 
         # Remove from cart
         button_delite = wdriver.find_element_by_xpath(Default_page.button_delite)
