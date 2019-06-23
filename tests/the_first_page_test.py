@@ -32,10 +32,9 @@ class The_first_page_test(unittest.TestCase):
 
         purchased_goods_field = wdriver.find_element_by_xpath(Default_page.purchased_goods_field)
         assert product_name == purchased_goods_field.text
-        calculated_full_prise = prise*quantity
+        calculated_full_prise = float(prise)*quantity
         full_prise_elem = wdriver.find_element_by_xpath(Default_page.quantity_elem)
-        assert full_prise_elem.text == calculated_full_prise
-
+        assert float(full_prise_elem.text) == calculated_full_prise
 
         # Remove from cart
         button_delite = wdriver.find_element_by_xpath(Default_page.button_delite)
