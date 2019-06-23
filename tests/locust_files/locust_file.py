@@ -2,23 +2,22 @@ from locust import HttpLocust, TaskSet, task
 
 
 class UserBehavior(TaskSet):
+
+    @task(1)
     def on_start(self):
         self.client.get("/")
 
     @task(2)
     def posts(self):
-        self.client.get("/posts")
+        self.client.head("/")
 
-    @task(1)
-    def comment(self):
-        data = {
-            "postId": 1,
-            "name": "my comment",
-            "email": "test@user.habr",
-            "body": "Author is cool. Some text. Hello world!"
-        }
-        self.client.post("/comments", data)
+    @task(3)
+    def on_start(self):
+        self.client.get("/delivery")
 
+    @task(4)
+    def posts(self):
+        self.client.head("/")
 
 class WebsiteUser(HttpLocust):
     task_set = UserBehavior
